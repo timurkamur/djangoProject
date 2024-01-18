@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Личный кабинет</h2>
+        <div class="mb-3">
+            <p>Фамилия: {{ student.last_name }}</p>
+            <p>Имя: {{ student.first_name }}</p>
+            <p>Группа: {{ student.group }}</p>
+            <p>Оценка: {{ student.chosen_grade }}</p>
+        </div>
+
+        {% load static %}
+
+        <div>
+            <h3>Ваши задания:</h3>
+            <div class="row">
+                {% for task_path in tasks_with_paths %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <img src="{% static task_path %}" class="card-img-top" alt="Задание" data-toggle="modal" data-target="#taskModal{{ forloop.counter }}">
+                            <div class="card-body">
+                                <p class="card-text">Задание {{ forloop.counter }}</p>
+                                <a href="{% static task_path %}" download class="btn btn-primary btn-sm">Скачать</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Модальное окно для полноэкранного просмотра -->
+                    <div class="modal fade" id="taskModal{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel{{ forloop.counter }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="taskModalLabel{{ forloop.counter }}">Задание {{ forloop.counter }}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="{% static task_path %}" class="img-fluid" alt="Задание">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
